@@ -3,6 +3,7 @@
         "xxlog.h": "c",
         "stdarg.h": "c",
         "stdint.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "stdlib.h": "c"
     }
 }
