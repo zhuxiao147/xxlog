@@ -6,7 +6,7 @@
 #include <string.h>
 
 #define XXLOGBFLEN 120 // Buffer Length  >> 8
-#define MAXNUMLEN 120 // 数字转字符串最大长度
+#define MAXNUMLEN 2048 // %* 字符串最大长度
 
 #define XXLOG_TEST (0x00)
 #define XXLOG_UART (0x01)
@@ -21,7 +21,7 @@
 
 
 /*-------测试buffer结构体---------*/
-#define XXLOG_TESTLEN  (1024)
+#define XXLOG_TESTLEN  (4096)
 typedef struct 
 {
     char xxlog_testbuffer[XXLOG_TESTLEN];

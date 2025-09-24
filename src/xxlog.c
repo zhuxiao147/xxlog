@@ -50,7 +50,7 @@ void xxlog_print(unsigned int loglevel, unsigned int channel, const char *fmt, .
     size_t i = 0;
     va_list args;
 
-    if (XXLOG_LEVEL > loglevel)
+    if (XXLOG_LEVEL > loglevel || fmt == NULL)
         return;
     
     va_start(args, fmt);
@@ -101,7 +101,7 @@ void xxlog_print_test(unsigned int loglevel, unsigned int channel, const char *f
     unsigned int needlen = 0;
     size_t i = 0;
 
-    if (XXLOG_LEVEL > loglevel)
+    if (XXLOG_LEVEL > loglevel || fmt == NULL)
         return;
     
     p = (char *)fmt;
