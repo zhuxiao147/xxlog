@@ -5,8 +5,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define XXLOGBFLEN 120 // Buffer Length  >> 8
-#define MAXNUMLEN 2048 // %* 字符串最大长度
+#define XXLOGBFLEN (120) // Buffer Length  >> 8
+#define MAXNUMLEN (1024) // %* 字符串最大长度
 
 #define XXLOG_TEST (0x00)
 #define XXLOG_UART (0x01)
@@ -21,12 +21,12 @@
 
 
 /*-------测试buffer结构体---------*/
-#define XXLOG_TESTLEN  (4096)
+#define XXLOG_TESTLEN  (4096)  //test buffer len
 typedef struct 
 {
     char xxlog_testbuffer[XXLOG_TESTLEN];
     int i;
-}xxlog_test_t;
+}xxlog_testbf_t;
 
 void xxlog_print(unsigned int loglevel, unsigned int channel, const char *fmt, ...);
-void xxlog_print_test(unsigned int loglevel, unsigned int channel, const char *fmt, va_list args);
+void xxlog_print_args(unsigned int loglevel, unsigned int channel, const char *fmt, va_list args);
