@@ -4,7 +4,7 @@
 #include <time.h>
 #include "../include/xxlog.h"
 
-// 测试结果统计
+/*测试结果统计*/
 typedef struct {
     int total_tests;
     int passed_tests;
@@ -14,7 +14,7 @@ typedef struct {
 TestStats stats = {0, 0, 0};
 extern xxlog_testbf_t  testbuf;
 
-// 比较函数输出的辅助函数
+/* 比较函数输出的辅助函数 */
 int compare_printf_output(const char *format, ...)
 {
     char buffer1[XXLOG_TESTLEN];
@@ -28,12 +28,12 @@ int compare_printf_output(const char *format, ...)
     memcpy(buffer1, testbuf.xxlog_testbuffer, XXLOG_TESTLEN);
     va_end(arg1);
 
-    // 使用标准 printf (通过 snprintf 模拟)
+    /*使用标准 printf (通过 snprintf 模拟)*/ 
     va_start(args2, format);
     vsprintf(buffer2, format, args2);
     va_end(args2);
     
-    // 比较结果
+    /*比较结果*/ 
     int result = (strcmp(buffer1, buffer2) == 0);
     
     if (!result) {
@@ -45,7 +45,7 @@ int compare_printf_output(const char *format, ...)
     return result;
 }
 
-// 测试用例运行器
+/*测试用例运行器*/
 void run_test(int (*test_func)(void), const char *test_name)
 {
     stats.total_tests++;
@@ -60,7 +60,7 @@ void run_test(int (*test_func)(void), const char *test_name)
     }
 }
 
-// 基础格式化测试
+/*基础格式化测试*/ 
 int test_basic_formatting() {
     return compare_printf_output("Hello, World!");
 }
@@ -137,10 +137,10 @@ int test_multiple_args() {
 
 int test_special_cases() {
     int results = 1;
-    results &= compare_printf_output("%%");  // 百分号
-    results &= compare_printf_output("");    // 空字符串
-    results &= compare_printf_output("%s", ""); // 空字符串参数
-    results &= compare_printf_output(NULL);  // NULL 格式字符串（边界测试）
+    results &= compare_printf_output("%%");  /*百分号*/ 
+    results &= compare_printf_output("");    /*空字符串*/ 
+    results &= compare_printf_output("%s", ""); /*空字符串参数*/ 
+    results &= compare_printf_output(NULL);  /*NULL 格式字符串（边界测试）*/ 
     return results;
 }
 
@@ -150,7 +150,7 @@ int test_edge_cases() {
     results &= compare_printf_output("%d", -2147483647);
     results &= compare_printf_output("%f", 0.0);
     results &= compare_printf_output("%f", -0.0);
-    results &= compare_printf_output("%s", NULL); // NULL 字符串指针
+    results &= compare_printf_output("%s", NULL); /*NULL 字符串指针*/ 
     return results;
 }
 
@@ -158,21 +158,21 @@ int test_performance() {
     clock_t start, end;
     double mxxlog_time, printf_time;
     int iterations = 100000;
-    
-    // 测试 xxlog_print 性能
+    int i;
+    /*测试 xxlog_print 性能*/ 
     memset(testbuf.xxlog_testbuffer, 0, XXLOG_TESTLEN);
     testbuf.i = 0;
     start = clock();
-    for (int i = 0; i < iterations; i++) {
+    for (i = 0; i < iterations; i++) {
         testbuf.i = 0;
         xxlog_print(XXLOG_INFO, XXLOG_TEST, "Iteration %d: %f", i, i * 3.14159);
     }
     end = clock();
     mxxlog_time = ((double)(end - start)) / CLOCKS_PER_SEC;
     
-    // 测试标准 printf 性能
+    /*测试标准 printf 性能*/ 
     start = clock();
-    for (int i = 0; i < iterations; i++) {
+    for (i = 0; i < iterations; i++) {
         char buffer[100];
         sprintf(buffer, "Iteration %d: %f", i, i * 3.14159);
     }
@@ -187,7 +187,7 @@ int test_performance() {
 int test_large_output() {
     char large_arg[1024];
     
-    // 生成大字符串
+    /*生成大字符串*/ 
     memset(large_arg, 'B', sizeof(large_arg)-1);
     large_arg[sizeof(large_arg)-1] = '\0';
     
@@ -196,7 +196,7 @@ int test_large_output() {
 
 int main() {
     printf("Starting myprintf vs printf compatibility tests...\n\n");
-    // 运行测试套件
+    /*运行测试套件*/ 
     run_test(test_basic_formatting, "Basic formatting");
     run_test(test_integers, "Integer formatting");
     run_test(test_floats, "Float formatting");
@@ -212,7 +212,7 @@ int main() {
     run_test(test_performance, "Performance test");
     
 
-    // 输出测试结果摘要
+    /*输出测试结果摘要*/ 
     printf("\n=== TEST SUMMARY ===\n");
     printf("Total tests:  %d\n", stats.total_tests);
     printf("Passed:       %d\n", stats.passed_tests);

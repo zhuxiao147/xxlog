@@ -1,16 +1,16 @@
 
 #include "../include/xxlog.h"
-unsigned int XXLOG_LEVEL = 0; 
+unsigned int XXLOG_LEVEL = 0;
 
 /*-------测试使用---------*/
-xxlog_testbf_t  testbuf;
+xxlog_testbf_t testbuf;
 
 static void xxlog_putchar(char c, unsigned int channel)
 {
     switch (channel)
     {
     case XXLOG_TEST:
-        testbuf.xxlog_testbuffer[testbuf.i] = c; //测试，可注释
+        testbuf.xxlog_testbuffer[testbuf.i] = c; /*测试，可注释*/
         testbuf.i++;
         break;
     case XXLOG_UART:
@@ -29,9 +29,9 @@ static void xxlog_putchar(char c, unsigned int channel)
     return;
 }
 
-static void xxlog_putstr(char *str, unsigned int strlen, unsigned int channel)
+static void xxlog_putstr(char *str, int strlen, unsigned int channel)
 {
-    size_t i = 0;
+    int i = 0;
     for (i = 0; i < strlen || str[i] != '\0'; i++)
         xxlog_putchar(str[i], channel);
     return;
@@ -42,13 +42,13 @@ void xxlog_print(unsigned int loglevel, unsigned int channel, const char *fmt, .
     char buffer[XXLOGBFLEN];
     char tmpbuffer[XXLOGBFLEN + MAXNUMLEN];
     char *p;
-    unsigned int needlen = 0;
+    int needlen = 0;
     size_t i = 0;
     va_list args;
 
     if (XXLOG_LEVEL > loglevel || fmt == NULL)
         return;
-    
+
     va_start(args, fmt);
 
     p = (char *)fmt;
@@ -71,7 +71,7 @@ void xxlog_print(unsigned int loglevel, unsigned int channel, const char *fmt, .
                 buffer[i] = *p++;
             }
             buffer[i] = '\0';
-            needlen = vsnprintf(tmpbuffer, sizeof(tmpbuffer), buffer, args);
+            needlen = VSNPRINTF_BUF(tmpbuffer, sizeof(tmpbuffer), buffer, args);
             xxlog_putstr(tmpbuffer, needlen, channel);
             continue;
         }
@@ -92,15 +92,15 @@ void xxlog_print_args(unsigned int loglevel, unsigned int channel, const char *f
     char buffer[XXLOGBFLEN];
     char tmpbuffer[XXLOGBFLEN + MAXNUMLEN];
     char *p;
-    unsigned int needlen = 0;
+    int needlen = 0;
     size_t i = 0;
     va_list args;
 
     if (XXLOG_LEVEL > loglevel || fmt == NULL)
         return;
-    
-    va_copy(args, in_args);
-    
+
+    VA_COPY(args, in_args);
+
     p = (char *)fmt;
     while (p[0] != '\0')
     {
@@ -121,7 +121,7 @@ void xxlog_print_args(unsigned int loglevel, unsigned int channel, const char *f
                 buffer[i] = *p++;
             }
             buffer[i] = '\0';
-            needlen = vsnprintf(tmpbuffer, sizeof(tmpbuffer), buffer, args);
+            needlen = VSNPRINTF_BUF(tmpbuffer, sizeof(tmpbuffer), buffer, args);
             xxlog_putstr(tmpbuffer, needlen, channel);
             continue;
         }
@@ -133,6 +133,6 @@ void xxlog_print_args(unsigned int loglevel, unsigned int channel, const char *f
         }
     }
 
-    va_end(args);
+    VA_END_COPY(args);
     return;
 }
